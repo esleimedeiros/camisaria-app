@@ -91,3 +91,33 @@ td input { border: none; background: transparent; text-align: center; width: 100
 .btn-voltar:hover {
     background: #2980b9;
 }
+
+/* Ajustes para telas de celular */
+@media (max-width: 600px) {
+    .dashboard-container {
+        padding: 10px;
+    }
+    
+    .grid-4, .grid-3 {
+        grid-template-columns: 1fr; /* Coloca tudo em uma coluna só */
+    }
+
+    /* Ajuste na tabela para ela não "quebrar" o layout */
+    .section-box {
+        overflow-x: auto; /* Permite rolar a tabela para o lado */
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    /* Diminuir os inputs para caberem melhor */
+    input {
+        padding: 5px !important;
+    }
+
+    .btn-success {
+        width: 100%;
+        padding: 15px;
+    }
+}

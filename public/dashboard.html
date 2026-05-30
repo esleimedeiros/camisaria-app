@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Orçamento</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <div class="header-logo-title">
+                <img src="logo.jpg" alt="Logo Rof" class="logo-dash">
+                <h1>Novo Pedido</h1>
+            </div>
+            <div>
+                <a href="historico.html" class="btn-voltar" style="margin-right: 10px;">Ver Histórico</a>
+                <button id="logout-btn" class="btn-danger">Sair</button>
+            </div>
+        </header>
+
+        <form id="orcamento-form">
+            <div class="section-box grid-4">
+                <div><label>Data:</label><input type="date" id="data_pedido"></div>
+                <div><label>Entrega:</label><input type="date" id="data_entrega"></div>
+                <div><label>Nº Ped.:</label><input type="text" id="num_pedido"></div>
+                <div>
+                    <label>Status do Pedido:</label>
+                    <select id="status" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; background: white; font-weight: bold;">
+                        <option value="Aguardando">Aguardando</option>
+                        <option value="Em Produção">Em Produção</option>
+                        <option value="Finalizado">Finalizado</option>
+                        <option value="Entregue">Entregue</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-box grid-3">
+                <div><label>Nome:</label><input type="text" id="cliente_nome" required></div>
+                <div><label>Telefone:</label><input type="text" id="cliente_tel"></div>
+                <div><label>Endereço:</label><input type="text" id="cliente_end"></div>
+            </div>
+
+            <div class="section-box">
+                <h3>Medidas e Detalhes</h3>
+                <div class="grid-4">
+                    <div><label>Compr. M.L:</label><input type="text"></div>
+                    <div><label>Compr. M.C:</label><input type="text"></div>
+                    <div><label>Colarinho:</label><input type="text"></div>
+                    <div><label>Tórax:</label><input type="text"></div>
+                    <div><label>Cintura:</label><input type="text"></div>
+                    <div><label>Frauda:</label><input type="text"></div>
+                    <div><label>Punho D=:</label><input type="text"></div>
+                    <div><label>Punho E=:</label><input type="text"></div>
+                </div>
+                
+                <h4 style="margin-top: 15px;">Pala</h4>
+                <div class="grid-4">
+                    <div><label>Bíceps:</label><input type="text"></div>
+                    <div><label>Ombro:</label><input type="text"></div>
+                    <div><label>Antebraço:</label><input type="text"></div>
+                    <div><label>M. Peito:</label><input type="text"></div>
+                </div>
+
+                <div class="grid-2" style="margin-top: 15px;">
+                    <div><label>Modelagem:</label><input type="text"></div>
+                    <div><label>Monograma:</label><input type="text"></div>
+                </div>
+            </div>
+
+            <div class="section-box checkbox-grid">
+                <label><input type="checkbox"> COL. LISO</label>
+                <label><input type="checkbox"> RECORTE RETO</label>
+                <label><input type="checkbox"> COM BOTÃO</label>
+                <label><input type="checkbox"> BOLSO RETO</label>
+                <label><input type="checkbox"> F. LISA</label>
+                <label><input type="checkbox"> BOLSO MILITAR</label>
+                <label><input type="checkbox"> P. MACHO</label>
+                <label><input type="checkbox"> PREGA PALA</label>
+                <label><input type="checkbox"> COBERTA</label>
+                <label><input type="checkbox"> PENCES</label>
+                <label><input type="checkbox"> RECORTE ITALIANO</label>
+                <label><input type="checkbox"> BOT. T. M.</label>
+                <label><input type="checkbox"> PESPONTO FINO</label>
+            </div>
+
+            <div class="section-box">
+                <table id="tabela-itens">
+                    <thead>
+                        <tr>
+                            <th>ITEM</th>
+                            <th>QTD</th>
+                            <th>REFER</th>
+                            <th>FORN</th>
+                            <th>VALOR UNI</th>
+                            <th>VALOR FINAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itens-body">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="section-box grid-3 totais">
+                <div><label>TOTAL (R$):</label><input type="number" id="val_total" readonly></div>
+                <div><label>SINAL (R$):</label><input type="number" id="val_sinal" value="0"></div>
+                <div><label>SALDO (R$):</label><input type="number" id="val_saldo" readonly></div>
+            </div>
+
+            <button type="button" id="imprimir-btn" class="btn-success">Imprimir / Salvar PDF</button>
+        </form>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

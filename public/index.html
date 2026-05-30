@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Camisaria</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="center-body">
+    <div class="auth-container">
+        <img src="logo.jpg" alt="Logo da Camisaria" class="logo-login">
+
+        <h2 id="form-title">Acesso Restrito</h2>
+        <form id="auth-form">
+            <input type="text" id="username" placeholder="Nome de Usuário" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            
+            <input type="text" id="access-code" placeholder="Código de Acesso (Ex: CAMISARIA...)" style="display: none;">
+            
+            <button type="submit" id="submit-btn">Entrar</button>
+        </form>
+        <p class="toggle-text">Primeiro acesso? <span id="toggle-link">Cadastre-se</span></p>
+        <p id="message"></p>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

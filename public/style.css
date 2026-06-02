@@ -79,7 +79,7 @@ td input { border: none; background: transparent; text-align: center; width: 100
     }
 }
 
-/* Botão de voltar no histórico */
+/* Botão de voltar no histórico. */
 .btn-voltar {
     background: #3498db;
     color: white;

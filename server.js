@@ -6,13 +6,13 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 1. Cria e Conecta o Banco de Dados
+// Conexão com o banco
 const db = new sqlite3.Database('./database.db', (err) => {
     if (err) console.error(err.message);
     console.log('Banco de dados conectado.');
 });
 
-// 2. Cria as Tabelas
+// Criação das Tabelas (agora com a coluna representante)
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,11 +26,12 @@ db.serialize(() => {
         telefone TEXT,
         data_pedido TEXT,
         valor_total REAL,
-        status TEXT DEFAULT 'Aguardando'
+        status TEXT DEFAULT 'Aguardando',
+        representante TEXT
     )`);
 });
 
-// 3. Rota de Cadastro
+// Rota de Registro
 app.post('/api/register', (req, res) => {
     const { username, password, accessCode } = req.body;
     if (accessCode !== 'CAMISARIA@2026.*') return res.status(401).json({ error: 'Código inválido.' });
@@ -41,28 +42,28 @@ app.post('/api/register', (req, res) => {
     });
 });
 
-// 4. Rota de Login
+// Rota de Login (agora devolve o nome)
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     db.get(`SELECT * FROM users WHERE username = ? AND password = ?`, [username, password], (err, row) => {
-        if (row) res.json({ message: 'Acesso liberado!' });
+        if (row) res.json({ message: 'Acesso liberado!', username: row.username });
         else res.status(401).json({ error: 'Usuário ou senha incorretos.' });
     });
 });
 
-// 5. Rota para Salvar Novo Orçamento (CREATE)
+// Salvar Pedido (agora recebe o representante)
 app.post('/api/pedidos', (req, res) => {
-    const { cliente_nome, telefone, data_pedido, valor_total, status } = req.body;
+    const { cliente_nome, telefone, data_pedido, valor_total, status, representante } = req.body;
     if (!cliente_nome) return res.status(400).json({ error: 'O nome do cliente é obrigatório.' });
 
-    const query = `INSERT INTO pedidos (cliente_nome, telefone, data_pedido, valor_total, status) VALUES (?, ?, ?, ?, ?)`;
-    db.run(query, [cliente_nome, telefone, data_pedido, valor_total, status || 'Aguardando'], function(err) {
+    const query = `INSERT INTO pedidos (cliente_nome, telefone, data_pedido, valor_total, status, representante) VALUES (?, ?, ?, ?, ?, ?)`;
+    db.run(query, [cliente_nome, telefone, data_pedido, valor_total, status || 'Aguardando', representante || 'Não informado'], function(err) {
         if (err) return res.status(500).json({ error: 'Erro ao salvar.' });
         res.json({ message: 'Orçamento salvo com sucesso!', pedidoId: this.lastID });
     });
 });
 
-// 6. Rota para Buscar TODOS os Orçamentos (READ)
+// Buscar todos os pedidos
 app.get('/api/pedidos', (req, res) => {
     db.all(`SELECT * FROM pedidos ORDER BY id DESC`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: 'Erro ao buscar pedidos.' });
@@ -70,7 +71,7 @@ app.get('/api/pedidos', (req, res) => {
     });
 });
 
-// 7. Rota para Buscar UM Pedido Específico
+// Buscar um pedido específico
 app.get('/api/pedidos/:id', (req, res) => {
     const { id } = req.params;
     db.get(`SELECT * FROM pedidos WHERE id = ?`, [id], (err, row) => {
@@ -80,7 +81,7 @@ app.get('/api/pedidos/:id', (req, res) => {
     });
 });
 
-// 8. Rota para Atualizar o Pedido (UPDATE)
+// Atualizar pedido
 app.put('/api/pedidos/:id', (req, res) => {
     const { id } = req.params;
     const { cliente_nome, telefone, data_pedido, valor_total, status } = req.body;
@@ -92,15 +93,15 @@ app.put('/api/pedidos/:id', (req, res) => {
     });
 });
 
-// 9. Rota para Excluir o Pedido (DELETE) - NOVO!
+// Excluir pedido
 app.delete('/api/pedidos/:id', (req, res) => {
     const { id } = req.params;
     db.run(`DELETE FROM pedidos WHERE id = ?`, [id], function(err) {
         if (err) return res.status(500).json({ error: 'Erro ao excluir o pedido.' });
-        res.json({ message: 'Pedido excluído do sistema.' });
+        res.json({ message: 'Pedido excluído.' });
     });
 });
 
 app.listen(3000, () => {
-    console.log('Sistema rodando! Acesse no navegador: http://localhost:3000');
+    console.log('Sistema rodando!');
 });

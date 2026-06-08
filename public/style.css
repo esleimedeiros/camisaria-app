@@ -1,123 +1,270 @@
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+/* Importação da fonte moderna do Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
-body { background-color: #eef2f5; color: #333; }
-
-/* Centraliza apenas a tela de login */
-.center-body { display: flex; justify-content: center; align-items: center; height: 100vh; }
-
-.auth-container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
-.auth-container input, .auth-container button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
-
-button { background: #2c3e50; color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; padding: 12px; border-radius: 5px; width: 100%;}
-button:hover { background: #1a252f; }
-.btn-danger { background: #e74c3c; width: auto; padding: 8px 15px;}
-.btn-success { background: #27ae60; margin-top: 20px;}
-
-.toggle-text { font-size: 14px; margin-top: 10px; }
-#toggle-link { color: #2980b9; cursor: pointer; font-weight: bold; }
-#message { margin-top: 15px; font-weight: bold; }
-
-/* Estilos do Dashboard (Ficha) */
-.dashboard-container { max-width: 900px; margin: 20px auto; background: #fff; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-.section-box { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fafafa; }
-.section-box h3 { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; font-size: 16px;}
-
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
-
-label { font-size: 12px; font-weight: bold; display: block; margin-bottom: 3px; }
-input[type="text"], input[type="date"], input[type="number"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-
-.checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
-.checkbox-grid label { display: flex; align-items: center; gap: 5px; font-size: 11px; }
-
-table { width: 100%; border-collapse: collapse; }
-th, td { border: 1px solid #ccc; padding: 5px; text-align: center; }
-td input { border: none; background: transparent; text-align: center; width: 100%; }
-.totais input { font-size: 18px; font-weight: bold; color: #d35400; }
-
-/* Responsivo para Celular */
-@media (max-width: 600px) {
-    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-    table { font-size: 12px; }
-    td input { padding: 2px; }
+/* Variáveis de cores para facilitar ajustes */
+:root {
+    --bg-dark: #0b0f19;
+    --card-bg: rgba(21, 28, 44, 0.7);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --accent-color: #3b82f6; /* Azul moderno */
+    --accent-hover: #2563eb;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
 }
 
-/* --- ESTILOS DAS LOGOMARCAS --- */
-
-/* Logo da tela de login */
-.logo-login {
-    max-width: 150px; /* Define um tamanho máximo */
-    height: auto;
-    margin-bottom: 15px;
+/* Animações Suaves */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Alinhamento do cabeçalho do Dashboard */
-.header-logo-title {
+body {
+    /* Fundo com gradiente radial para dar profundidade */
+    background: radial-gradient(circle at top, #1e293b, var(--bg-dark));
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Cabeçalho Sofisticado (Efeito Vidro) */
+header {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.dashboard-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Cards (Boxes) com Glassmorphism */
+.section-box {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* Títulos Modernos */
+h1, h2, h3, h4 {
+    margin-top: 0;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+h3 {
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Estrutura de Grid */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+/* Inputs Modernos */
+label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input, select {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    outline: none;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Checkboxes Personalizados */
+.checkbox-grid label {
     display: flex;
     align-items: center;
-    gap: 200px; /* Dá um espaço entre a logo e o título */
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-transform: none;
+    color: var(--text-main);
+    transition: color 0.2s;
 }
 
-/* Logo da tela de orçamentos (menorzinha para caber no topo) */
-.logo-dash {
-    max-width: 80px; 
-    height: auto;
+.checkbox-grid label:hover {
+    color: var(--accent-color);
 }
 
-/* Ajuste no celular para o cabeçalho não quebrar */
-@media (max-width: 600px) {
-    .header-logo-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-    .dash-header h1 {
-        font-size: 18px;
-    }
+.checkbox-grid input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    accent-color: var(--accent-color);
 }
 
-/* Botão de voltar no histórico. */
-.btn-voltar {
-    background: #3498db;
-    color: white;
+/* Botões Premium */
+button, .btn-success, .btn-danger, .btn-voltar {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
     text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-.btn-voltar:hover {
-    background: #2980b9;
+    display: inline-block;
 }
 
-/* Ajustes para telas de celular */
-@media (max-width: 600px) {
-    .dashboard-container {
-        padding: 10px;
+.btn-success {
+    background: linear-gradient(135deg, var(--accent-color), #2563eb);
+    color: white;
+    width: 100%;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+    background: #ef4444;
+    color: white;
+}
+
+/* Tabela Elegante */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    color: var(--text-muted);
+    text-align: left;
+    padding: 12px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Linhas da tabela interativas */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Ajustes dos inputs dentro da tabela */
+td input {
+    padding: 8px;
+    border: 1px solid transparent; /* Remove borda pesada na tabela */
+    background: transparent;
+}
+
+td input:focus {
+    border-bottom: 1px solid var(--accent-color);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+/* Scrollbar Personalizada para o Dark Mode */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* Responsividade Aprimorada para Celular */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
     }
     
-    .grid-4, .grid-3 {
-        grid-template-columns: 1fr; /* Coloca tudo em uma coluna só */
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
     }
-
-    /* Ajuste na tabela para ela não "quebrar" o layout */
+    
     .section-box {
-        overflow-x: auto; /* Permite rolar a tabela para o lado */
-    }
-
-    table {
-        font-size: 12px;
-    }
-
-    /* Diminuir os inputs para caberem melhor */
-    input {
-        padding: 5px !important;
-    }
-
-    .btn-success {
-        width: 100%;
         padding: 15px;
+    }
+    
+    table {
+        min-width: 600px; /* Garante que a tabela não esmague no celular */
     }
 }

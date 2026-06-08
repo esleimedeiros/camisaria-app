@@ -180,4 +180,65 @@ if (logoutBtn) {
         localStorage.removeItem('representanteLogado');
         window.location.href = '/index.html'; 
     });
-}
+}// ==========================================
+// 5. LÓGICA DA TABELA E CÁLCULOS MATEMÁTICOS
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const itensBody = document.getElementById('itens-body');
+    const inputTotal = document.getElementById('val_total');
+    const inputSinal = document.getElementById('val_sinal');
+    const inputSaldo = document.getElementById('val_saldo');
+
+    // 5.1 Criar as linhas da tabela automaticamente (8 linhas vazias)
+    if (itensBody && itensBody.children.length === 0) {
+        for (let i = 1; i <= 8; i++) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" class="item-desc" placeholder="Item ${i}"></td>
+                <td><input type="number" class="item-qtd" min="0" value="0"></td>
+                <td><input type="text" class="item-refer"></td>
+                <td><input type="text" class="item-forn"></td>
+                <td><input type="number" class="item-valor" min="0" step="0.01" value="0.00"></td>
+                <td><input type="number" class="item-final" readonly value="0.00" style="background:#e2e8f0; color:#333;"></td>
+            `;
+            itensBody.appendChild(tr);
+        }
+    }
+
+    // 5.2 Função que faz a matemática pesada
+    function calcularTotais() {
+        let totalGeral = 0;
+        const linhas = document.querySelectorAll('#itens-body tr');
+
+        // Multiplica a Quantidade pelo Valor Unitário de cada linha
+        linhas.forEach(linha => {
+            const qtd = parseFloat(linha.querySelector('.item-qtd').value) || 0;
+            const valorUni = parseFloat(linha.querySelector('.item-valor').value) || 0;
+            const inputFinal = linha.querySelector('.item-final');
+
+            const subtotal = qtd * valorUni;
+            inputFinal.value = subtotal.toFixed(2); // Atualiza o Valor Final da linha
+            totalGeral += subtotal; // Soma no Total Geral
+        });
+
+        // Atualiza os campos de Total e Saldo lá embaixo
+        if (inputTotal && inputSinal && inputSaldo) {
+            inputTotal.value = totalGeral.toFixed(2);
+            
+            const sinal = parseFloat(inputSinal.value) || 0;
+            const saldo = totalGeral - sinal;
+            
+            inputSaldo.value = saldo.toFixed(2);
+        }
+    }
+
+    // 5.3 Fica "ouvindo" qualquer número que o usuário digitar na tabela para calcular na hora
+    if (itensBody) {
+        itensBody.addEventListener('input', calcularTotais);
+    }
+    
+    // 5.4 Fica "ouvindo" se o usuário mudar o valor do SINAL para abater do SALDO
+    if (inputSinal) {
+        inputSinal.addEventListener('input', calcularTotais);
+    }
+});

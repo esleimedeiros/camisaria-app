@@ -394,3 +394,54 @@ td input:focus {
         min-width: 600px; /* Garante que a tabela não esmague no celular */
     }
 }
+
+/* Ajustes para impressão / exportação PDF */
+@media print {
+    body, .dashboard-container {
+        background: #0b0f19 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color: var(--text-main) !important;
+    }
+
+    /* Remover sombras e bordas suaves que ficam estranhas no PDF */
+    .section-box, header, table, .auth-container {
+        box-shadow: none !important;
+        border-radius: 4px !important;
+        border: 1px solid rgba(255,255,255,0.06) !important;
+        background: #0f172a !important;
+    }
+
+    /* Garantir que os inputs apareçam claramente */
+    input, select, textarea {
+        background: rgba(255,255,255,0.02) !important;
+        color: var(--text-main) !important;
+        border: 1px solid rgba(255,255,255,0.06) !important;
+    }
+
+    /* Esconder elementos desnecessários para o PDF */
+    header .header-logo-title img { max-width: 160px !important; }
+}
+
+/* Classe aplicada temporariamente antes de gerar PDF via html2pdf */
+.pdf-export {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.pdf-export .section-box,
+.pdf-export header,
+.pdf-export table,
+.pdf-export .auth-container {
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    background: #0f172a !important;
+    color: var(--text-main) !important;
+}
+
+.pdf-export input, .pdf-export select, .pdf-export textarea {
+    background: rgba(255,255,255,0.02) !important;
+    color: var(--text-main) !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+}

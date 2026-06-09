@@ -198,15 +198,24 @@ if (logoutBtn) {
                 alert('Área do pedido não encontrada para exportar.');
                 return;
             }
+            // aplica classe para forçar estilos de PDF (fundos sólidos, sem blur)
+            element.classList.add('pdf-export');
             try {
                 const opt = {
                     margin: 10,
                     filename: `pedido_${Date.now()}.pdf`,
-                    html2canvas: { scale: 2 },
+                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0f172a' },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
-                html2pdf().set(opt).from(element).save();
+                // html2pdf retorna uma Promise quando usando .save()
+                html2pdf().set(opt).from(element).save().then(() => {
+                    element.classList.remove('pdf-export');
+                }).catch(err => {
+                    element.classList.remove('pdf-export');
+                    alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : err));
+                });
             } catch (err) {
+                element.classList.remove('pdf-export');
                 alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : err));
             }
         });

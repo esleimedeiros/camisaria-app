@@ -196,6 +196,24 @@ button, .btn-success, .btn-danger, .btn-voltar {
     color: white;
 }
 
+/* Estilo do botão 'Voltar/Novo Pedido' para combinar com 'Sair', mantendo as cores atuais */
+.btn-voltar {
+    background: rgba(255, 255, 255, 0.02);
+    color: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-voltar:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.05);
+}
+
 /* Tabela Elegante */
 .table-container {
     overflow-x: auto;

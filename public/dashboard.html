@@ -107,9 +107,12 @@
                 <div><label>SALDO (R$):</label><input type="number" id="val_saldo" readonly></div>
             </div>
 
-            <button type="button" id="imprimir-btn" class="btn-success">Imprimir / Salvar PDF</button>
+            <button type="button" id="imprimir-btn" class="btn-success" style="margin-right:8px;">Salvar Pedido</button>
+            <button type="button" id="print-btn" class="btn-voltar" style="margin-right:8px;">Imprimir</button>
+            <button type="button" id="export-pdf-btn" class="btn-voltar">Exportar PDF</button>
         </form>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

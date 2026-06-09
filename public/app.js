@@ -180,6 +180,38 @@ if (logoutBtn) {
         localStorage.removeItem('representanteLogado');
         window.location.href = '/index.html'; 
     });
+
+    // Imprimir e Exportar PDF
+    const printBtn = document.getElementById('print-btn');
+    const exportPdfBtn = document.getElementById('export-pdf-btn');
+
+    if (printBtn) {
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+    }
+
+    if (exportPdfBtn) {
+        exportPdfBtn.addEventListener('click', () => {
+            const element = document.querySelector('.dashboard-container') || document.getElementById('orcamento-form');
+            if (!element) {
+                alert('Área do pedido não encontrada para exportar.');
+                return;
+            }
+            try {
+                const opt = {
+                    margin: 10,
+                    filename: `pedido_${Date.now()}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save();
+            } catch (err) {
+                alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : err));
+            }
+        });
+    }
+
 }// ==========================================
 // 5. LÓGICA DA TABELA E CÁLCULOS MATEMÁTICOS
 // ==========================================

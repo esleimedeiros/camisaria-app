@@ -12,7 +12,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
     console.log('Banco de dados conectado.');
 });
 
-// Criação das Tabelas (agora com a coluna representante)
+// Criação das Tabelas
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,28 +34,23 @@ db.serialize(() => {
         detalhes TEXT
     )`);
 
+    // Atualização automática de colunas se não existirem
     db.all(`PRAGMA table_info(pedidos)`, [], (err, rows) => {
         if (err) return console.error(err.message);
         const columns = rows.map(row => row.name);
-        if (!columns.includes('data_entrega')) {
-            db.run(`ALTER TABLE pedidos ADD COLUMN data_entrega TEXT`);
-        }
-        if (!columns.includes('num_pedido')) {
-            db.run(`ALTER TABLE pedidos ADD COLUMN num_pedido TEXT`);
-        }
-        if (!columns.includes('cliente_end')) {
-            db.run(`ALTER TABLE pedidos ADD COLUMN cliente_end TEXT`);
-        }
-        if (!columns.includes('detalhes')) {
-            db.run(`ALTER TABLE pedidos ADD COLUMN detalhes TEXT`);
-        }
+        if (!columns.includes('data_entrega')) db.run(`ALTER TABLE pedidos ADD COLUMN data_entrega TEXT`);
+        if (!columns.includes('num_pedido')) db.run(`ALTER TABLE pedidos ADD COLUMN num_pedido TEXT`);
+        if (!columns.includes('cliente_end')) db.run(`ALTER TABLE pedidos ADD COLUMN cliente_end TEXT`);
+        if (!columns.includes('detalhes')) db.run(`ALTER TABLE pedidos ADD COLUMN detalhes TEXT`);
     });
 });
 
-// Rota de Registro
+// Rota de Registro Segura
 app.post('/api/register', (req, res) => {
     const { username, password, accessCode } = req.body;
-    if (accessCode !== 'CAMISARIA@2026.*') return res.status(401).json({ error: 'Código inválido.' });
+    const serverAccessCode = process.env.ACCESS_CODE || 'CAMISARIA@2026.*';
+    
+    if (accessCode !== serverAccessCode) return res.status(401).json({ error: 'Código inválido.' });
 
     db.run(`INSERT INTO users (username, password) VALUES (?, ?)`, [username, password], function(err) {
         if (err) return res.status(400).json({ error: 'Usuário já existe.' });
@@ -63,7 +58,7 @@ app.post('/api/register', (req, res) => {
     });
 });
 
-// Rota de Login (agora devolve o nome)
+// Rota de Login
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     db.get(`SELECT * FROM users WHERE username = ? AND password = ?`, [username, password], (err, row) => {
@@ -72,22 +67,26 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// Salvar Pedido (agora recebe o representante e detalhes extras)
+// Salvar Pedido
 app.post('/api/pedidos', (req, res) => {
     const { cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status, representante, detalhes } = req.body;
     if (!cliente_nome) return res.status(400).json({ error: 'O nome do cliente é obrigatório.' });
 
     const query = `INSERT INTO pedidos (cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status, representante, detalhes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const detalhesJson = detalhes ? JSON.stringify(detalhes) : null;
+    
     db.run(query, [cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status || 'Aguardando', representante || 'Não informado', detalhesJson], function(err) {
-        if (err) return res.status(500).json({ error: 'Erro ao salvar.' });
+        if (err) {
+            console.error("Erro ao salvar:", err.message);
+            return res.status(500).json({ error: 'Erro interno ao salvar.' });
+        }
         res.json({ message: 'Orçamento salvo com sucesso!', pedidoId: this.lastID });
     });
 });
 
-// Buscar todos os pedidos
+// Buscar todos os pedidos (Limite de 100 para não travar o celular)
 app.get('/api/pedidos', (req, res) => {
-    db.all(`SELECT * FROM pedidos ORDER BY id DESC`, [], (err, rows) => {
+    db.all(`SELECT * FROM pedidos ORDER BY id DESC LIMIT 100`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: 'Erro ao buscar pedidos.' });
         res.json(rows);
     });
@@ -111,7 +110,10 @@ app.put('/api/pedidos/:id', (req, res) => {
 
     const query = `UPDATE pedidos SET cliente_nome = ?, telefone = ?, data_pedido = ?, data_entrega = ?, num_pedido = ?, cliente_end = ?, valor_total = ?, status = ?, detalhes = ? WHERE id = ?`;
     db.run(query, [cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status, detalhesJson, id], function(err) {
-        if (err) return res.status(500).json({ error: 'Erro ao atualizar.' });
+        if (err) {
+            console.error("Erro ao atualizar:", err.message);
+            return res.status(500).json({ error: 'Erro ao atualizar.' });
+        }
         res.json({ message: 'Orçamento atualizado com sucesso!', pedidoId: id });
     });
 });
@@ -125,6 +127,7 @@ app.delete('/api/pedidos/:id', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('Sistema rodando!');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Sistema rodando na porta ${PORT}!`);
 });

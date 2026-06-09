@@ -45,6 +45,18 @@ header {
     animation: fadeInUp 0.5s ease-out;
 }
 
+header .header-logo-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .dashboard-container {
     max-width: 1000px;
     margin: 30px auto;
@@ -237,7 +249,7 @@ header .logo-dash {
 /* Página de login centralizada e espaçada */
 body.center-body {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     min-height: 100vh;
     padding: 40px 20px 20px;
@@ -276,6 +288,21 @@ body.center-body {
     color: #60a5fa;
 }
 
+#status {
+    background: rgba(15, 23, 42, 0.9) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+#status option {
+    background: #0f172a;
+    color: var(--text-main);
+}
+
+.dashboard-container header a.btn-voltar {
+    margin-right: 12px;
+}
+
 @media (max-width: 640px) {
     body.center-body {
         padding: 24px 14px 16px;
@@ -309,7 +336,7 @@ td input {
 
 td input:focus {
     border-bottom: 1px solid var(--accent-color);
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(31, 17, 17, 0.692);
     border-radius: 4px;
 }
 

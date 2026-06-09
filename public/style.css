@@ -404,6 +404,14 @@ td input:focus {
         color: var(--text-main) !important;
     }
 
+    /* Remover position sticky do header para evitar sobreposição */
+    header {
+        position: relative !important;
+        top: auto !important;
+        z-index: 1 !important;
+        page-break-after: avoid;
+    }
+
     /* Remover sombras e bordas suaves que ficam estranhas no PDF */
     .section-box, header, table, .auth-container {
         box-shadow: none !important;
@@ -419,8 +427,13 @@ td input:focus {
         border: 1px solid rgba(255,255,255,0.06) !important;
     }
 
-    /* Esconder elementos desnecessários para o PDF */
-    header .header-logo-title img { max-width: 160px !important; }
+    /* Esconder botões desnecessários para impressão */
+    #print-btn, #export-pdf-btn, #logout-btn {
+        display: none !important;
+    }
+
+    /* Logo menor na impressão */
+    header .header-logo-title img { max-width: 120px !important; }
 }
 
 /* Classe aplicada temporariamente antes de gerar PDF via html2pdf */
@@ -429,8 +442,15 @@ td input:focus {
     print-color-adjust: exact;
 }
 
+.pdf-export header {
+    position: relative !important;
+    top: auto !important;
+    z-index: 1 !important;
+    box-shadow: none !important;
+    background: #0f172a !important;
+}
+
 .pdf-export .section-box,
-.pdf-export header,
 .pdf-export table,
 .pdf-export .auth-container {
     box-shadow: none !important;
@@ -444,4 +464,30 @@ td input:focus {
     background: rgba(255,255,255,0.02) !important;
     color: var(--text-main) !important;
     border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.pdf-export #print-btn, 
+.pdf-export #export-pdf-btn, 
+.pdf-export #logout-btn {
+    display: none !important;
+}
+
+/* Esconder campos de input vazios no PDF, mostrar apenas valores preenchidos */
+.pdf-export input[type="text"]:not([value]),
+.pdf-export input[type="number"]:not([value]),
+.pdf-export input[type="date"]:not([value]),
+.pdf-export select:empty {
+    display: none !important;
+}
+
+.pdf-export label {
+    display: inline-block !important;
+    font-size: 0.75rem !important;
+    color: rgba(255,255,255,0.6) !important;
+    margin-right: 8px !important;
+    margin-bottom: 4px !important;
+}
+
+.pdf-export input::after {
+    content: attr(value) !important;
 }

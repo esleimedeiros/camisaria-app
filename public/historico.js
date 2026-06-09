@@ -56,3 +56,12 @@ async function excluirPedido(id) {
         }
     }
 }
+
+// Lógica de logout
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('representanteLogado');
+        window.location.href = '/index.html'; 
+    });
+}

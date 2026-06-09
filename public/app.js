@@ -193,29 +193,54 @@ if (logoutBtn) {
 
     if (exportPdfBtn) {
         exportPdfBtn.addEventListener('click', () => {
-            const element = document.querySelector('.dashboard-container') || document.getElementById('orcamento-form');
+            const element = document.querySelector('.dashboard-container');
             if (!element) {
                 alert('Área do pedido não encontrada para exportar.');
                 return;
             }
-            // aplica classe para forçar estilos de PDF (fundos sólidos, sem blur)
-            element.classList.add('pdf-export');
+            
+            // Clonar o container para manipular sem afetar a página
+            const elementClone = element.cloneNode(true);
+            
+            // Remover o header do clone para evitar sobreposição
+            const headerClone = elementClone.querySelector('header');
+            if (headerClone) {
+                headerClone.remove();
+            }
+            
+            // Remover botões de ação (imprimir, exportar) do clone
+            const btnsPrint = elementClone.querySelectorAll('#print-btn, #export-pdf-btn, #logout-btn');
+            btnsPrint.forEach(btn => btn.remove());
+            
+            // Aplicar classe de estilo PDF ao clone
+            elementClone.classList.add('pdf-export');
+            
             try {
                 const opt = {
-                    margin: 10,
-                    filename: `pedido_${Date.now()}.pdf`,
-                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0f172a' },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    margin: [10, 10, 10, 10],
+                    filename: `pedido_${new Date().toISOString().slice(0,10)}_${Date.now()}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2, 
+                        useCORS: true, 
+                        logging: false,
+                        backgroundColor: '#0f172a',
+                        allowTaint: true
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: 'a4', 
+                        orientation: 'portrait',
+                        compress: true
+                    }
                 };
-                // html2pdf retorna uma Promise quando usando .save()
-                html2pdf().set(opt).from(element).save().then(() => {
-                    element.classList.remove('pdf-export');
-                }).catch(err => {
-                    element.classList.remove('pdf-export');
-                    alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : err));
+                
+                html2pdf().set(opt).from(elementClone).save().catch(err => {
+                    console.error('Erro ao gerar PDF:', err);
+                    alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : 'Erro desconhecido'));
                 });
             } catch (err) {
-                element.classList.remove('pdf-export');
+                console.error('Erro:', err);
                 alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : err));
             }
         });

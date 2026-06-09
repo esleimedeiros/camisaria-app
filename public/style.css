@@ -219,6 +219,87 @@ tbody tr:hover {
     background-color: rgba(255, 255, 255, 0.03);
 }
 
+/* Logos menores e responsivas */
+.logo-login,
+.logo-dash {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+header .logo-dash {
+    margin-right: 16px;
+    max-width: 120px;
+}
+
+/* Página de login centralizada e espaçada */
+body.center-body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px 20px;
+}
+
+.auth-container {
+    width: min(520px, 100%);
+    margin: 0 auto;
+    padding: 32px 28px;
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.logo-login {
+    max-width: 180px;
+    margin: 0 auto 28px;
+}
+
+.toggle-text {
+    color: var(--text-muted);
+    margin-top: 18px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+#toggle-link {
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+#toggle-link:hover {
+    color: #60a5fa;
+}
+
+@media (max-width: 640px) {
+    body.center-body {
+        padding: 24px 14px 16px;
+    }
+
+    .auth-container {
+        width: 100%;
+        padding: 24px 18px;
+        border-radius: 20px;
+    }
+
+    .section-box,
+    .grid-4,
+    .grid-3,
+    .grid-2 {
+        display: block;
+        width: 100%;
+    }
+
+    .dashboard-container {
+        padding: 0 12px;
+    }
+}
+
 /* Ajustes dos inputs dentro da tabela */
 td input {
     padding: 8px;

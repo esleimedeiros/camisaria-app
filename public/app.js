@@ -135,7 +135,7 @@ if (imprimirBtn) {
 }
 
 // ==========================================
-// 3. CARREGAR DADOS PARA EDIÇÃO (Se houver ID na URL)
+// 3. CARREGAR DADOS PARA EDIÇÃO + CRIAR TABELA (Se houver ID na URL)
 // ==========================================
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -168,88 +168,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error("Erro ao carregar o pedido para edição:", error);
         }
     }
-});
 
-// ==========================================
-// 4. LÓGICA DE LOGOUT (SAIR DO SISTEMA)
-// ==========================================
-const logoutBtn = document.getElementById('logout-btn');
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        // Limpa o nome do representante da memória e volta para o login
-        localStorage.removeItem('representanteLogado');
-        window.location.href = '/index.html'; 
-    });
-
-    // Imprimir e Exportar PDF
-    const printBtn = document.getElementById('print-btn');
-    const exportPdfBtn = document.getElementById('export-pdf-btn');
-
-    if (printBtn) {
-        printBtn.addEventListener('click', () => {
-            window.print();
-        });
-    }
-
-    if (exportPdfBtn) {
-        exportPdfBtn.addEventListener('click', () => {
-            const element = document.querySelector('.dashboard-container');
-            if (!element) {
-                alert('Área do pedido não encontrada para exportar.');
-                return;
-            }
-            
-            // Clonar o container para manipular sem afetar a página
-            const elementClone = element.cloneNode(true);
-            
-            // Remover o header do clone para evitar sobreposição
-            const headerClone = elementClone.querySelector('header');
-            if (headerClone) {
-                headerClone.remove();
-            }
-            
-            // Remover botões de ação (imprimir, exportar) do clone
-            const btnsPrint = elementClone.querySelectorAll('#print-btn, #export-pdf-btn, #logout-btn');
-            btnsPrint.forEach(btn => btn.remove());
-            
-            // Aplicar classe de estilo PDF ao clone
-            elementClone.classList.add('pdf-export');
-            
-            try {
-                const opt = {
-                    margin: [10, 10, 10, 10],
-                    filename: `pedido_${new Date().toISOString().slice(0,10)}_${Date.now()}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { 
-                        scale: 2, 
-                        useCORS: true, 
-                        logging: false,
-                        backgroundColor: '#0f172a',
-                        allowTaint: true
-                    },
-                    jsPDF: { 
-                        unit: 'mm', 
-                        format: 'a4', 
-                        orientation: 'portrait',
-                        compress: true
-                    }
-                };
-                
-                html2pdf().set(opt).from(elementClone).save().catch(err => {
-                    console.error('Erro ao gerar PDF:', err);
-                    alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : 'Erro desconhecido'));
-                });
-            } catch (err) {
-                console.error('Erro:', err);
-                alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : err));
-            }
-        });
-    }
-
-}// ==========================================
-// 5. LÓGICA DA TABELA E CÁLCULOS MATEMÁTICOS
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
+    // ==========================================
+    // 5. LÓGICA DA TABELA E CÁLCULOS MATEMÁTICOS
+    // ==========================================
     const itensBody = document.getElementById('itens-body');
     const inputTotal = document.getElementById('val_total');
     const inputSinal = document.getElementById('val_sinal');
@@ -308,3 +230,86 @@ document.addEventListener('DOMContentLoaded', () => {
         inputSinal.addEventListener('input', calcularTotais);
     }
 });
+
+// ==========================================
+// 4. LÓGICA DE LOGOUT (SAIR DO SISTEMA)
+// ==========================================
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        // Limpa o nome do representante da memória e volta para o login
+        localStorage.removeItem('representanteLogado');
+        window.location.href = '/index.html'; 
+    });
+}
+
+// ==========================================
+// 4.1 LÓGICA DE IMPRESSÃO E EXPORTAÇÃO PDF
+// ==========================================
+const printBtn = document.getElementById('print-btn');
+const exportPdfBtn = document.getElementById('export-pdf-btn');
+
+if (printBtn) {
+    printBtn.addEventListener('click', () => {
+        window.print();
+    });
+}
+
+if (exportPdfBtn) {
+    exportPdfBtn.addEventListener('click', () => {
+        const element = document.querySelector('.dashboard-container');
+        if (!element) {
+            alert('Área do pedido não encontrada para exportar.');
+            return;
+        }
+        
+        // Clonar o container para manipular sem afetar a página
+        const elementClone = element.cloneNode(true);
+        
+        // Remover o header do clone para evitar sobreposição
+        const headerClone = elementClone.querySelector('header');
+        if (headerClone) {
+            headerClone.remove();
+        }
+        
+        // Remover botões de ação (imprimir, exportar) do clone
+        const btnsPrint = elementClone.querySelectorAll('#print-btn, #export-pdf-btn, #logout-btn');
+        btnsPrint.forEach(btn => btn.remove());
+        
+        // Aplicar classe de estilo PDF ao clone
+        elementClone.classList.add('pdf-export');
+        
+        try {
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `pedido_${new Date().toISOString().slice(0,10)}_${Date.now()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false,
+                    backgroundColor: '#0f172a',
+                    allowTaint: true,
+                    ignoreElements: (el) => {
+                        // Ignorar elementos vazios nas labels
+                        return el.classList && el.classList.contains('pdf-ignore');
+                    }
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: true
+                }
+            };
+            
+            html2pdf().set(opt).from(elementClone).save().catch(err => {
+                console.error('Erro ao gerar PDF:', err);
+                alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : 'Erro desconhecido'));
+            });
+        } catch (err) {
+            console.error('Erro:', err);
+            alert('Erro ao gerar PDF: ' + (err && err.message ? err.message : err));
+        }
+    });
+}

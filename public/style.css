@@ -471,23 +471,3 @@ td input:focus {
 .pdf-export #logout-btn {
     display: none !important;
 }
-
-/* Esconder campos de input vazios no PDF, mostrar apenas valores preenchidos */
-.pdf-export input[type="text"]:not([value]),
-.pdf-export input[type="number"]:not([value]),
-.pdf-export input[type="date"]:not([value]),
-.pdf-export select:empty {
-    display: none !important;
-}
-
-.pdf-export label {
-    display: inline-block !important;
-    font-size: 0.75rem !important;
-    color: rgba(255,255,255,0.6) !important;
-    margin-right: 8px !important;
-    margin-bottom: 4px !important;
-}
-
-.pdf-export input::after {
-    content: attr(value) !important;
-}

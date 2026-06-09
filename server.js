@@ -25,10 +25,31 @@ db.serialize(() => {
         cliente_nome TEXT,
         telefone TEXT,
         data_pedido TEXT,
+        data_entrega TEXT,
+        num_pedido TEXT,
+        cliente_end TEXT,
         valor_total REAL,
         status TEXT DEFAULT 'Aguardando',
-        representante TEXT
+        representante TEXT,
+        detalhes TEXT
     )`);
+
+    db.all(`PRAGMA table_info(pedidos)`, [], (err, rows) => {
+        if (err) return console.error(err.message);
+        const columns = rows.map(row => row.name);
+        if (!columns.includes('data_entrega')) {
+            db.run(`ALTER TABLE pedidos ADD COLUMN data_entrega TEXT`);
+        }
+        if (!columns.includes('num_pedido')) {
+            db.run(`ALTER TABLE pedidos ADD COLUMN num_pedido TEXT`);
+        }
+        if (!columns.includes('cliente_end')) {
+            db.run(`ALTER TABLE pedidos ADD COLUMN cliente_end TEXT`);
+        }
+        if (!columns.includes('detalhes')) {
+            db.run(`ALTER TABLE pedidos ADD COLUMN detalhes TEXT`);
+        }
+    });
 });
 
 // Rota de Registro
@@ -51,13 +72,14 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// Salvar Pedido (agora recebe o representante)
+// Salvar Pedido (agora recebe o representante e detalhes extras)
 app.post('/api/pedidos', (req, res) => {
-    const { cliente_nome, telefone, data_pedido, valor_total, status, representante } = req.body;
+    const { cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status, representante, detalhes } = req.body;
     if (!cliente_nome) return res.status(400).json({ error: 'O nome do cliente é obrigatório.' });
 
-    const query = `INSERT INTO pedidos (cliente_nome, telefone, data_pedido, valor_total, status, representante) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.run(query, [cliente_nome, telefone, data_pedido, valor_total, status || 'Aguardando', representante || 'Não informado'], function(err) {
+    const query = `INSERT INTO pedidos (cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status, representante, detalhes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const detalhesJson = detalhes ? JSON.stringify(detalhes) : null;
+    db.run(query, [cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status || 'Aguardando', representante || 'Não informado', detalhesJson], function(err) {
         if (err) return res.status(500).json({ error: 'Erro ao salvar.' });
         res.json({ message: 'Orçamento salvo com sucesso!', pedidoId: this.lastID });
     });
@@ -84,10 +106,11 @@ app.get('/api/pedidos/:id', (req, res) => {
 // Atualizar pedido
 app.put('/api/pedidos/:id', (req, res) => {
     const { id } = req.params;
-    const { cliente_nome, telefone, data_pedido, valor_total, status } = req.body;
+    const { cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status, detalhes } = req.body;
+    const detalhesJson = detalhes ? JSON.stringify(detalhes) : null;
 
-    const query = `UPDATE pedidos SET cliente_nome = ?, telefone = ?, data_pedido = ?, valor_total = ?, status = ? WHERE id = ?`;
-    db.run(query, [cliente_nome, telefone, data_pedido, valor_total, status, id], function(err) {
+    const query = `UPDATE pedidos SET cliente_nome = ?, telefone = ?, data_pedido = ?, data_entrega = ?, num_pedido = ?, cliente_end = ?, valor_total = ?, status = ?, detalhes = ? WHERE id = ?`;
+    db.run(query, [cliente_nome, telefone, data_pedido, data_entrega, num_pedido, cliente_end, valor_total, status, detalhesJson, id], function(err) {
         if (err) return res.status(500).json({ error: 'Erro ao atualizar.' });
         res.json({ message: 'Orçamento atualizado com sucesso!', pedidoId: id });
     });

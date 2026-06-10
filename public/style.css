@@ -471,3 +471,13 @@ td input:focus {
 .pdf-export #logout-btn {
     display: none !important;
 }
+
+/* Estilo Específico para Salvar em PDF / Papel */
+@media print {
+    body, .dashboard-container { background: white !important; color: black !important; padding: 0; margin: 0; }
+    .section-box { border: 1px solid #ccc !important; box-shadow: none !important; background: transparent !important; page-break-inside: avoid; }
+    input, select { border: 1px solid #999 !important; color: black !important; background: transparent !important; padding: 5px !important; }
+    th { border-bottom: 2px solid black !important; color: black !important; }
+    td { border-bottom: 1px solid #ccc !important; }
+    ::-webkit-scrollbar { display: none; }
+}

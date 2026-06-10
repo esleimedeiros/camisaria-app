@@ -71,7 +71,6 @@ if (imprimirBtn) {
             return;
         }
 
-        // Pega todos os campos novos
         const telefone = document.getElementById('cliente_tel') ? document.getElementById('cliente_tel').value : '';
         const cliente_end = document.getElementById('cliente_end') ? document.getElementById('cliente_end').value : '';
         const data_pedido = document.getElementById('data_pedido') ? document.getElementById('data_pedido').value : '';
@@ -82,13 +81,12 @@ if (imprimirBtn) {
         
         const representante = localStorage.getItem('representanteLogado') || 'Desconhecido';
 
-        // MÁGICA: Varre a tabela para pegar os itens preenchidos e salvar em 'detalhes'
         const itensDetalhados = [];
         const linhas = document.querySelectorAll('#itens-body tr');
         linhas.forEach(linha => {
             const desc = linha.querySelector('.item-desc').value;
-            const qtd = linha.querySelector('.item-qtd').value;
-            if (desc || qtd > 0) { // Salva a linha só se tiver descrição ou quantidade
+            const qtd = parseFloat(linha.querySelector('.item-qtd').value) || 0;
+            if (desc || qtd > 0) { 
                 itensDetalhados.push({
                     desc: desc,
                     qtd: qtd,
@@ -100,7 +98,6 @@ if (imprimirBtn) {
             }
         });
 
-        // Monta o pacote de dados completo para enviar ao backend
         const dadosPedido = { 
             cliente_nome, telefone, cliente_end, data_pedido, data_entrega, 
             num_pedido, valor_total, status, representante, detalhes: itensDetalhados 
@@ -133,62 +130,7 @@ if (imprimirBtn) {
 }
 
 // ==========================================
-// 3. CARREGAR DADOS PARA EDIÇÃO (Se houver ID na URL)
-// ==========================================
-document.addEventListener('DOMContentLoaded', async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const pedidoId = urlParams.get('id');
-
-    if (pedidoId && document.getElementById('cliente_nome')) {
-        try {
-            const response = await fetch(`/api/pedidos/${pedidoId}`);
-            if (response.ok) {
-                const pedido = await response.json();
-                
-                document.getElementById('cliente_nome').value = pedido.cliente_nome || '';
-                if (document.getElementById('cliente_tel')) document.getElementById('cliente_tel').value = pedido.telefone || '';
-                if (document.getElementById('cliente_end')) document.getElementById('cliente_end').value = pedido.cliente_end || '';
-                if (document.getElementById('data_pedido')) document.getElementById('data_pedido').value = pedido.data_pedido || '';
-                if (document.getElementById('data_entrega')) document.getElementById('data_entrega').value = pedido.data_entrega || '';
-                if (document.getElementById('num_pedido')) document.getElementById('num_pedido').value = pedido.num_pedido || '';
-                if (document.getElementById('val_total')) document.getElementById('val_total').value = pedido.valor_total || '';
-                if (document.getElementById('status')) document.getElementById('status').value = pedido.status || '';
-
-                // Recarrega os detalhes da tabela se existirem
-                if (pedido.detalhes) {
-                    const itens = JSON.parse(pedido.detalhes);
-                    const linhas = document.querySelectorAll('#itens-body tr');
-                    itens.forEach((item, index) => {
-                        if(linhas[index]) {
-                            linhas[index].querySelector('.item-desc').value = item.desc || '';
-                            linhas[index].querySelector('.item-qtd').value = item.qtd || 0;
-                            linhas[index].querySelector('.item-refer').value = item.refer || '';
-                            linhas[index].querySelector('.item-forn').value = item.forn || '';
-                            linhas[index].querySelector('.item-valor').value = item.valor_uni || 0;
-                            linhas[index].querySelector('.item-final').value = item.valor_final || 0;
-                        }
-                    });
-                }
-            }
-        } catch (error) {
-            console.error("Erro ao carregar o pedido:", error);
-        }
-    }
-});
-
-// ==========================================
-// 4. LÓGICA DE LOGOUT
-// ==========================================
-const logoutBtn = document.getElementById('logout-btn');
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('representanteLogado');
-        window.location.href = '/index.html'; 
-    });
-}
-
-// ==========================================
-// 5. LÓGICA DA TABELA E CÁLCULOS MATEMÁTICOS
+// 3. LÓGICA DA TABELA (CRIAR AS LINHAS PRIMEIRO!)
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const itensBody = document.getElementById('itens-body');
@@ -196,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputSinal = document.getElementById('val_sinal');
     const inputSaldo = document.getElementById('val_saldo');
 
+    // 1º passo: Desenhar a tabela no ecrã
     if (itensBody && itensBody.children.length === 0) {
         for (let i = 1; i <= 8; i++) {
             const tr = document.createElement('tr');
@@ -211,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Função de cálculos matemáticos
     function calcularTotais() {
         let totalGeral = 0;
         const linhas = document.querySelectorAll('#itens-body tr');
@@ -236,3 +180,59 @@ document.addEventListener('DOMContentLoaded', () => {
     if (itensBody) itensBody.addEventListener('input', calcularTotais);
     if (inputSinal) inputSinal.addEventListener('input', calcularTotais);
 });
+
+// ==========================================
+// 4. CARREGAR DADOS PARA EDIÇÃO (PREENCHER DEPOIS DE CRIAR!)
+// ==========================================
+document.addEventListener('DOMContentLoaded', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pedidoId = urlParams.get('id');
+
+    if (pedidoId && document.getElementById('cliente_nome')) {
+        try {
+            const response = await fetch(`/api/pedidos/${pedidoId}`);
+            if (response.ok) {
+                const pedido = await response.json();
+                
+                document.getElementById('cliente_nome').value = pedido.cliente_nome || '';
+                if (document.getElementById('cliente_tel')) document.getElementById('cliente_tel').value = pedido.telefone || '';
+                if (document.getElementById('cliente_end')) document.getElementById('cliente_end').value = pedido.cliente_end || '';
+                if (document.getElementById('data_pedido')) document.getElementById('data_pedido').value = pedido.data_pedido || '';
+                if (document.getElementById('data_entrega')) document.getElementById('data_entrega').value = pedido.data_entrega || '';
+                if (document.getElementById('num_pedido')) document.getElementById('num_pedido').value = pedido.num_pedido || '';
+                if (document.getElementById('val_total')) document.getElementById('val_total').value = pedido.valor_total || '';
+                if (document.getElementById('status')) document.getElementById('status').value = pedido.status || '';
+
+                // 2º passo: Agora sim, preencher as linhas que já foram desenhadas
+                if (pedido.detalhes) {
+                    const itens = JSON.parse(pedido.detalhes);
+                    const linhas = document.querySelectorAll('#itens-body tr');
+                    
+                    itens.forEach((item, index) => {
+                        if(linhas[index]) {
+                            linhas[index].querySelector('.item-desc').value = item.desc || '';
+                            linhas[index].querySelector('.item-qtd').value = item.qtd || 0;
+                            linhas[index].querySelector('.item-refer').value = item.refer || '';
+                            linhas[index].querySelector('.item-forn').value = item.forn || '';
+                            linhas[index].querySelector('.item-valor').value = item.valor_uni || 0;
+                            linhas[index].querySelector('.item-final').value = item.valor_final || 0;
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao carregar o pedido:", error);
+        }
+    }
+});
+
+// ==========================================
+// 5. LÓGICA DE LOGOUT
+// ==========================================
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('representanteLogado');
+        window.location.href = '/index.html'; 
+    });
+}

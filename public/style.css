@@ -19,7 +19,6 @@
 }
 
 body {
-    /* Fundo com gradiente radial para dar profundidade */
     background: radial-gradient(circle at top, #1e293b, var(--bg-dark));
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
@@ -45,16 +44,15 @@ header {
     animation: fadeInUp 0.5s ease-out;
 }
 
-header .header-logo-title {
+.header-logo-title {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 15px;
 }
 
-header > div:last-child {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.logo-dash {
+    max-height: 40px;
+    border-radius: 8px;
 }
 
 .dashboard-container {
@@ -196,24 +194,6 @@ button, .btn-success, .btn-danger, .btn-voltar {
     color: white;
 }
 
-/* Estilo do botão 'Voltar/Novo Pedido' para combinar com 'Sair', mantendo as cores atuais */
-.btn-voltar {
-    background: rgba(255, 255, 255, 0.02);
-    color: inherit;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: inline-block;
-    text-decoration: none;
-    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-voltar:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.05);
-}
-
 /* Tabela Elegante */
 .table-container {
     overflow-x: auto;
@@ -240,7 +220,6 @@ td {
     border-bottom: 1px solid var(--border-color);
 }
 
-/* Linhas da tabela interativas */
 tbody tr {
     transition: background-color 0.2s ease;
 }
@@ -249,112 +228,15 @@ tbody tr:hover {
     background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* Logos menores e responsivas */
-.logo-login,
-.logo-dash {
-    max-width: 250px;
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto 20px;
-}
-
-header .logo-dash {
-    margin-right: 16px;
-    max-width: 120px;
-}
-
-/* Página de login centralizada e espaçada */
-body.center-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 40px 20px 20px;
-}
-
-.auth-container {
-    width: min(520px, 100%);
-    margin: 0 auto;
-    padding: 32px 28px;
-    background: rgba(15, 23, 42, 0.88);
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-}
-
-.logo-login {
-    max-width: 180px;
-    margin: 0 auto 28px;
-}
-
-.toggle-text {
-    color: var(--text-muted);
-    margin-top: 18px;
-    text-align: center;
-    font-size: 0.95rem;
-}
-
-#toggle-link {
-    color: var(--accent-color);
-    cursor: pointer;
-    font-weight: 700;
-    text-decoration: underline;
-}
-
-#toggle-link:hover {
-    color: #60a5fa;
-}
-
-#status {
-    background: rgba(15, 23, 42, 0.9) !important;
-    color: var(--text-main) !important;
-    border: 1px solid var(--border-color) !important;
-}
-
-#status option {
-    background: #0f172a;
-    color: var(--text-main);
-}
-
-.dashboard-container header a.btn-voltar {
-    margin-right: 12px;
-}
-
-@media (max-width: 640px) {
-    body.center-body {
-        padding: 24px 14px 16px;
-    }
-
-    .auth-container {
-        width: 100%;
-        padding: 24px 18px;
-        border-radius: 20px;
-    }
-
-    .section-box,
-    .grid-4,
-    .grid-3,
-    .grid-2 {
-        display: block;
-        width: 100%;
-    }
-
-    .dashboard-container {
-        padding: 0 12px;
-    }
-}
-
-/* Ajustes dos inputs dentro da tabela */
 td input {
     padding: 8px;
-    border: 1px solid transparent; /* Remove borda pesada na tabela */
+    border: 1px solid transparent; 
     background: transparent;
 }
 
 td input:focus {
     border-bottom: 1px solid var(--accent-color);
-    background: rgba(31, 17, 17, 0.692);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
 
@@ -391,93 +273,18 @@ td input:focus {
     }
     
     table {
-        min-width: 600px; /* Garante que a tabela não esmague no celular */
+        min-width: 600px;
     }
 }
 
-/* Ajustes para impressão / exportação PDF */
+/* ==========================================
+   ESTILO PROFISSIONAL PARA EXPORTAR PDF
+========================================== */
 @media print {
-    body, .dashboard-container {
-        background: #0b0f19 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        color: var(--text-main) !important;
+    /* Força o tamanho A4 e margens controladas */
+    @page {
+        size: A4;
+        margin: 1cm;
     }
 
-    /* Remover position sticky do header para evitar sobreposição */
-    header {
-        position: relative !important;
-        top: auto !important;
-        z-index: 1 !important;
-        page-break-after: avoid;
-    }
-
-    /* Remover sombras e bordas suaves que ficam estranhas no PDF */
-    .section-box, header, table, .auth-container {
-        box-shadow: none !important;
-        border-radius: 4px !important;
-        border: 1px solid rgba(255,255,255,0.06) !important;
-        background: #0f172a !important;
-    }
-
-    /* Garantir que os inputs apareçam claramente */
-    input, select, textarea {
-        background: rgba(255,255,255,0.02) !important;
-        color: var(--text-main) !important;
-        border: 1px solid rgba(255,255,255,0.06) !important;
-    }
-
-    /* Esconder botões desnecessários para impressão */
-    #print-btn, #export-pdf-btn, #logout-btn {
-        display: none !important;
-    }
-
-    /* Logo menor na impressão */
-    header .header-logo-title img { max-width: 120px !important; }
-}
-
-/* Classe aplicada temporariamente antes de gerar PDF via html2pdf */
-.pdf-export {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-}
-
-.pdf-export header {
-    position: relative !important;
-    top: auto !important;
-    z-index: 1 !important;
-    box-shadow: none !important;
-    background: #0f172a !important;
-}
-
-.pdf-export .section-box,
-.pdf-export table,
-.pdf-export .auth-container {
-    box-shadow: none !important;
-    border-radius: 4px !important;
-    border: 1px solid rgba(255,255,255,0.06) !important;
-    background: #0f172a !important;
-    color: var(--text-main) !important;
-}
-
-.pdf-export input, .pdf-export select, .pdf-export textarea {
-    background: rgba(255,255,255,0.02) !important;
-    color: var(--text-main) !important;
-    border: 1px solid rgba(255,255,255,0.06) !important;
-}
-
-.pdf-export #print-btn, 
-.pdf-export #export-pdf-btn, 
-.pdf-export #logout-btn {
-    display: none !important;
-}
-
-/* Estilo Específico para Salvar em PDF / Papel */
-@media print {
-    body, .dashboard-container { background: white !important; color: black !important; padding: 0; margin: 0; }
-    .section-box { border: 1px solid #ccc !important; box-shadow: none !important; background: transparent !important; page-break-inside: avoid; }
-    input, select { border: 1px solid #999 !important; color: black !important; background: transparent !important; padding: 5px !important; }
-    th { border-bottom: 2px solid black !important; color: black !important; }
-    td { border-bottom: 1px solid #ccc !important; }
-    ::-webkit-scrollbar { display: none; }
-}
+    body, .

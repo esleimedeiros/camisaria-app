@@ -79,6 +79,10 @@ if (imprimirBtn) {
         const status = document.getElementById('status') ? document.getElementById('status').value : 'Aguardando';
         const valor_total = document.getElementById('val_total') ? parseFloat(document.getElementById('val_total').value) || 0 : 0;
         
+        // RECUPERA SINAL E SALDO
+        const sinal = document.getElementById('val_sinal') ? parseFloat(document.getElementById('val_sinal').value) || 0 : 0;
+        const saldo = document.getElementById('val_saldo') ? parseFloat(document.getElementById('val_saldo').value) || 0 : 0;
+        
         const representante = localStorage.getItem('representanteLogado') || 'Desconhecido';
 
         const itensDetalhados = [];
@@ -88,8 +92,7 @@ if (imprimirBtn) {
             const qtd = parseFloat(linha.querySelector('.item-qtd').value) || 0;
             if (desc || qtd > 0) { 
                 itensDetalhados.push({
-                    desc: desc,
-                    qtd: qtd,
+                    desc: desc, qtd: qtd,
                     refer: linha.querySelector('.item-refer').value,
                     forn: linha.querySelector('.item-forn').value,
                     valor_uni: linha.querySelector('.item-valor').value,
@@ -98,9 +101,40 @@ if (imprimirBtn) {
             }
         });
 
+        const medidas = {
+            compr_ml: document.getElementById('med_compr_ml') ? document.getElementById('med_compr_ml').value : '',
+            compr_mc: document.getElementById('med_compr_mc') ? document.getElementById('med_compr_mc').value : '',
+            colarinho: document.getElementById('med_colarinho') ? document.getElementById('med_colarinho').value : '',
+            torax: document.getElementById('med_torax') ? document.getElementById('med_torax').value : '',
+            cintura: document.getElementById('med_cintura') ? document.getElementById('med_cintura').value : '',
+            frauda: document.getElementById('med_frauda') ? document.getElementById('med_frauda').value : '',
+            punho_d: document.getElementById('med_punho_d') ? document.getElementById('med_punho_d').value : '',
+            punho_e: document.getElementById('med_punho_e') ? document.getElementById('med_punho_e').value : '',
+            biceps: document.getElementById('med_biceps') ? document.getElementById('med_biceps').value : '',
+            ombro: document.getElementById('med_ombro') ? document.getElementById('med_ombro').value : '',
+            antebraco: document.getElementById('med_antebraco') ? document.getElementById('med_antebraco').value : '',
+            m_peito: document.getElementById('med_m_peito') ? document.getElementById('med_m_peito').value : '',
+            modelagem: document.getElementById('med_modelagem') ? document.getElementById('med_modelagem').value : '',
+            monograma: document.getElementById('med_monograma') ? document.getElementById('med_monograma').value : '',
+            
+            chk_col_liso: document.getElementById('chk_col_liso') ? document.getElementById('chk_col_liso').checked : false,
+            chk_recorte_reto: document.getElementById('chk_recorte_reto') ? document.getElementById('chk_recorte_reto').checked : false,
+            chk_com_botao: document.getElementById('chk_com_botao') ? document.getElementById('chk_com_botao').checked : false,
+            chk_bolso_reto: document.getElementById('chk_bolso_reto') ? document.getElementById('chk_bolso_reto').checked : false,
+            chk_f_lisa: document.getElementById('chk_f_lisa') ? document.getElementById('chk_f_lisa').checked : false,
+            chk_bolso_militar: document.getElementById('chk_bolso_militar') ? document.getElementById('chk_bolso_militar').checked : false,
+            chk_p_macho: document.getElementById('chk_p_macho') ? document.getElementById('chk_p_macho').checked : false,
+            chk_prega_pala: document.getElementById('chk_prega_pala') ? document.getElementById('chk_prega_pala').checked : false,
+            chk_coberta: document.getElementById('chk_coberta') ? document.getElementById('chk_coberta').checked : false,
+            chk_pences: document.getElementById('chk_pences') ? document.getElementById('chk_pences').checked : false,
+            chk_recorte_italiano: document.getElementById('chk_recorte_italiano') ? document.getElementById('chk_recorte_italiano').checked : false,
+            chk_bot_tm: document.getElementById('chk_bot_tm') ? document.getElementById('chk_bot_tm').checked : false,
+            chk_pesponto_fino: document.getElementById('chk_pesponto_fino') ? document.getElementById('chk_pesponto_fino').checked : false
+        };
+
         const dadosPedido = { 
             cliente_nome, telefone, cliente_end, data_pedido, data_entrega, 
-            num_pedido, valor_total, status, representante, detalhes: itensDetalhados 
+            num_pedido, valor_total, sinal, saldo, status, representante, detalhes: itensDetalhados, medidas 
         };
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -130,7 +164,7 @@ if (imprimirBtn) {
 }
 
 // ==========================================
-// 3. LÓGICA DA TABELA (CRIAR AS LINHAS PRIMEIRO!)
+// 3. LÓGICA DA TABELA
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const itensBody = document.getElementById('itens-body');
@@ -138,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputSinal = document.getElementById('val_sinal');
     const inputSaldo = document.getElementById('val_saldo');
 
-    // 1º passo: Desenhar a tabela no ecrã
     if (itensBody && itensBody.children.length === 0) {
         for (let i = 1; i <= 8; i++) {
             const tr = document.createElement('tr');
@@ -154,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Função de cálculos matemáticos
     function calcularTotais() {
         let totalGeral = 0;
         const linhas = document.querySelectorAll('#itens-body tr');
@@ -182,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 4. CARREGAR DADOS PARA EDIÇÃO (PREENCHER DEPOIS DE CRIAR!)
+// 4. CARREGAR DADOS PARA EDIÇÃO 
 // ==========================================
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -202,12 +234,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (document.getElementById('num_pedido')) document.getElementById('num_pedido').value = pedido.num_pedido || '';
                 if (document.getElementById('val_total')) document.getElementById('val_total').value = pedido.valor_total || '';
                 if (document.getElementById('status')) document.getElementById('status').value = pedido.status || '';
+                
+                // RECARREGA SINAL E SALDO
+                if (document.getElementById('val_sinal')) document.getElementById('val_sinal').value = pedido.sinal || 0;
+                if (document.getElementById('val_saldo')) document.getElementById('val_saldo').value = pedido.saldo || 0;
 
-                // 2º passo: Agora sim, preencher as linhas que já foram desenhadas
                 if (pedido.detalhes) {
                     const itens = JSON.parse(pedido.detalhes);
                     const linhas = document.querySelectorAll('#itens-body tr');
-                    
                     itens.forEach((item, index) => {
                         if(linhas[index]) {
                             linhas[index].querySelector('.item-desc').value = item.desc || '';
@@ -218,6 +252,38 @@ document.addEventListener('DOMContentLoaded', async () => {
                             linhas[index].querySelector('.item-final').value = item.valor_final || 0;
                         }
                     });
+                }
+
+                if (pedido.medidas) {
+                    const med = JSON.parse(pedido.medidas);
+                    if (document.getElementById('med_compr_ml')) document.getElementById('med_compr_ml').value = med.compr_ml || '';
+                    if (document.getElementById('med_compr_mc')) document.getElementById('med_compr_mc').value = med.compr_mc || '';
+                    if (document.getElementById('med_colarinho')) document.getElementById('med_colarinho').value = med.colarinho || '';
+                    if (document.getElementById('med_torax')) document.getElementById('med_torax').value = med.torax || '';
+                    if (document.getElementById('med_cintura')) document.getElementById('med_cintura').value = med.cintura || '';
+                    if (document.getElementById('med_frauda')) document.getElementById('med_frauda').value = med.frauda || '';
+                    if (document.getElementById('med_punho_d')) document.getElementById('med_punho_d').value = med.punho_d || '';
+                    if (document.getElementById('med_punho_e')) document.getElementById('med_punho_e').value = med.punho_e || '';
+                    if (document.getElementById('med_biceps')) document.getElementById('med_biceps').value = med.biceps || '';
+                    if (document.getElementById('med_ombro')) document.getElementById('med_ombro').value = med.ombro || '';
+                    if (document.getElementById('med_antebraco')) document.getElementById('med_antebraco').value = med.antebraco || '';
+                    if (document.getElementById('med_m_peito')) document.getElementById('med_m_peito').value = med.m_peito || '';
+                    if (document.getElementById('med_modelagem')) document.getElementById('med_modelagem').value = med.modelagem || '';
+                    if (document.getElementById('med_monograma')) document.getElementById('med_monograma').value = med.monograma || '';
+
+                    if (document.getElementById('chk_col_liso')) document.getElementById('chk_col_liso').checked = med.chk_col_liso || false;
+                    if (document.getElementById('chk_recorte_reto')) document.getElementById('chk_recorte_reto').checked = med.chk_recorte_reto || false;
+                    if (document.getElementById('chk_com_botao')) document.getElementById('chk_com_botao').checked = med.chk_com_botao || false;
+                    if (document.getElementById('chk_bolso_reto')) document.getElementById('chk_bolso_reto').checked = med.chk_bolso_reto || false;
+                    if (document.getElementById('chk_f_lisa')) document.getElementById('chk_f_lisa').checked = med.chk_f_lisa || false;
+                    if (document.getElementById('chk_bolso_militar')) document.getElementById('chk_bolso_militar').checked = med.chk_bolso_militar || false;
+                    if (document.getElementById('chk_p_macho')) document.getElementById('chk_p_macho').checked = med.chk_p_macho || false;
+                    if (document.getElementById('chk_prega_pala')) document.getElementById('chk_prega_pala').checked = med.chk_prega_pala || false;
+                    if (document.getElementById('chk_coberta')) document.getElementById('chk_coberta').checked = med.chk_coberta || false;
+                    if (document.getElementById('chk_pences')) document.getElementById('chk_pences').checked = med.chk_pences || false;
+                    if (document.getElementById('chk_recorte_italiano')) document.getElementById('chk_recorte_italiano').checked = med.chk_recorte_italiano || false;
+                    if (document.getElementById('chk_bot_tm')) document.getElementById('chk_bot_tm').checked = med.chk_bot_tm || false;
+                    if (document.getElementById('chk_pesponto_fino')) document.getElementById('chk_pesponto_fino').checked = med.chk_pesponto_fino || false;
                 }
             }
         } catch (error) {

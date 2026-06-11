@@ -287,4 +287,67 @@ td input:focus {
         margin: 1cm;
     }
 
-    body, .
+    body, .dashboard-container {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* Esconde elementos indesejados no papel */
+    .botoes-acao, .btn-voltar, #logout-btn {
+        display: none !important;
+    }
+
+    .section-box {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+        page-break-inside: avoid;
+        border-radius: 4px !important;
+    }
+
+    /* Mantém as colunas alinhadas em PDF */
+    .grid-2 { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 5px !important; }
+    .grid-3 { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
+    .grid-4 { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 5px !important; }
+    
+    .checkbox-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 5px !important;
+    }
+
+    h1 { font-size: 16px !important; margin: 0 !important; color: black !important; }
+    h3, h4 { font-size: 12px !important; margin: 5px 0 !important; color: black !important; border-bottom: 1px solid #ccc; }
+    label { font-size: 9px !important; margin-bottom: 1px !important; color: #555 !important; font-weight: bold; }
+    .checkbox-grid label { font-size: 10px !important; font-weight: normal; }
+
+    /* Inputs convertidos em linhas de formulário */
+    input, select {
+        border: none !important;
+        border-bottom: 1px solid #000 !important;
+        border-radius: 0 !important;
+        color: black !important;
+        background: transparent !important;
+        padding: 2px 4px !important;
+        font-size: 11px !important;
+        height: auto !important;
+        width: 100% !important;
+        box-shadow: none !important;
+    }
+
+    table { width: 100% !important; border-collapse: collapse !important; font-size: 10px !important; margin-top: 5px !important;}
+    th { border-bottom: 1px solid black !important; color: black !important; padding: 4px !important; font-size: 9px !important; }
+    td { border-bottom: 1px dotted #ccc !important; padding: 2px !important; }
+    
+    td input { border-bottom: none !important; text-align: center; font-size: 11px !important;}
+    
+    /* Remove decorações visuais extra */
+    ::-webkit-scrollbar { display: none; }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+}

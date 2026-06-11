@@ -366,4 +366,25 @@ td input:focus {
     ::-webkit-scrollbar { display: none; }
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-}
+
+
+/* ==========================================
+       MARCA D'ÁGUA DA LOGO NO FUNDO DO PDF
+    ========================================== */
+    body::before {
+        content: "";
+        position: fixed; /* Fixa no centro de todas as folhas impressas */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('logo.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 60%; /* Tamanho da logo (ocupa 60% da largura da folha) */
+        opacity: 0.08; /* Super transparente (8%) para não atrapalhar a leitura */
+        z-index: -100; /* Joga a imagem para o fundo, atrás do texto */
+        pointer-events: none;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }}

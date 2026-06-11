@@ -28,7 +28,7 @@ body {
 }
 
 /* ==========================================
-   2. TELA DE LOGIN (RESTAURADA E MODERNIZADA)
+   2. ECRÃ DE LOGIN
 ========================================== */
 .center-body {
     display: flex;
@@ -316,16 +316,33 @@ td input:focus {
     .grid-3 { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
     .grid-4 { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 5px !important; }
     
+    /* Grelha rigorosa para as caixas de seleção no PDF */
     .checkbox-grid {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
-        gap: 5px !important;
+        gap: 8px 5px !important; 
+    }
+
+    .checkbox-grid label { 
+        display: flex !important;
+        align-items: center !important; 
+        font-size: 10px !important; 
+        font-weight: normal !important; 
+        margin: 0 !important;
+        white-space: nowrap !important; 
+    }
+
+    .checkbox-grid input[type="checkbox"] {
+        width: 12px !important; 
+        height: 12px !important;
+        margin: 0 5px 0 0 !important; 
+        appearance: auto !important;
+        vertical-align: middle !important;
     }
 
     h1 { font-size: 16px !important; margin: 0 !important; color: black !important; }
     h3, h4 { font-size: 12px !important; margin: 5px 0 !important; color: black !important; border-bottom: 1px solid #ccc; }
     label { font-size: 9px !important; margin-bottom: 1px !important; color: #555 !important; font-weight: bold; }
-    .checkbox-grid label { font-size: 10px !important; font-weight: normal; }
 
     input, select {
         border: none !important;

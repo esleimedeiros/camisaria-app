@@ -27,6 +27,11 @@ body {
     min-height: 100vh;
 }
 
+/* Esconde a marca d'água na tela do sistema normal */
+.marca-dagua-pdf {
+    display: none;
+}
+
 /* ==========================================
    2. ECRÃ DE LOGIN
 ========================================== */
@@ -58,32 +63,11 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
-.auth-container input {
-    margin-bottom: 15px;
-}
-
-.toggle-text {
-    margin-top: 20px;
-    font-size: 0.95rem;
-    color: var(--text-muted);
-}
-
-#toggle-link {
-    color: var(--accent-color);
-    cursor: pointer;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-#toggle-link:hover {
-    color: var(--accent-hover);
-    text-decoration: underline;
-}
-
-#message {
-    margin-top: 15px;
-    font-size: 0.9rem;
-}
+.auth-container input { margin-bottom: 15px; }
+.toggle-text { margin-top: 20px; font-size: 0.95rem; color: var(--text-muted); }
+#toggle-link { color: var(--accent-color); cursor: pointer; font-weight: 600; transition: color 0.3s ease; }
+#toggle-link:hover { color: var(--accent-hover); text-decoration: underline; }
+#message { margin-top: 15px; font-size: 0.9rem; }
 
 /* ==========================================
    3. CABEÇALHO, DASHBOARD E HISTÓRICO
@@ -104,16 +88,8 @@ header {
     animation: fadeInUp 0.5s ease-out;
 }
 
-.header-logo-title {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo-dash {
-    max-height: 40px;
-    border-radius: 8px;
-}
+.header-logo-title { display: flex; align-items: center; gap: 15px; }
+.logo-dash { max-height: 40px; border-radius: 8px; }
 
 .dashboard-container {
     max-width: 1000px;
@@ -134,141 +110,46 @@ header {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.section-box:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-}
+.section-box:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); }
 
-h1, h2, h3, h4 {
-    margin-top: 0;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-}
-
-h3 {
-    color: var(--accent-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
+h1, h2, h3, h4 { margin-top: 0; font-weight: 600; letter-spacing: -0.5px; }
+h3 { color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; }
 
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-.checkbox-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-}
+.checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
 
-label {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
 
 input, select {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 12px;
-    border-radius: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color); color: var(--text-main);
+    padding: 12px; border-radius: 8px; width: 100%; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease;
 }
 
-input:focus, select:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-    outline: none;
-    background: rgba(0, 0, 0, 0.4);
-}
+input:focus, select:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); outline: none; background: rgba(0, 0, 0, 0.4); }
 
-.checkbox-grid label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-size: 0.9rem;
-    text-transform: none;
-    color: var(--text-main);
-    transition: color 0.2s;
-}
-
+.checkbox-grid label { display: flex; align-items: center; cursor: pointer; font-size: 0.9rem; text-transform: none; color: var(--text-main); transition: color 0.2s; }
 .checkbox-grid label:hover { color: var(--accent-color); }
-
-.checkbox-grid input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-    accent-color: var(--accent-color);
-}
+.checkbox-grid input[type="checkbox"] { width: 18px; height: 18px; margin-right: 10px; accent-color: var(--accent-color); }
 
 button, .btn-success, .btn-danger, .btn-voltar {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+    font-family: 'Inter', sans-serif; font-weight: 600; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; text-align: center; text-decoration: none; display: inline-block;
 }
 
-.btn-success {
-    background: linear-gradient(135deg, var(--accent-color), #2563eb);
-    color: white;
-    width: 100%;
-    font-size: 1.1rem;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-}
-
-.btn-success:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
-    transform: translateY(-2px);
-}
-
-.btn-danger {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
+.btn-success { background: linear-gradient(135deg, var(--accent-color), #2563eb); color: white; width: 100%; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+.btn-success:hover { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); transform: translateY(-2px); }
+.btn-danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
 .btn-danger:hover { background: #ef4444; color: white; }
 
 .table-container { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-th {
-    color: var(--text-muted);
-    text-align: left;
-    padding: 12px;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid var(--border-color);
-}
+th { color: var(--text-muted); text-align: left; padding: 12px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border-color); }
 td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); }
 tbody tr { transition: background-color 0.2s ease; }
 tbody tr:hover { background-color: rgba(255, 255, 255, 0.03); }
-
-td input {
-    padding: 8px;
-    border: 1px solid transparent; 
-    background: transparent;
-}
-td input:focus {
-    border-bottom: 1px solid var(--accent-color);
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
+td input { padding: 8px; border: 1px solid transparent; background: transparent; }
+td input:focus { border-bottom: 1px solid var(--accent-color); background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -285,22 +166,10 @@ td input:focus {
    4. ESTILO PROFISSIONAL PARA EXPORTAR PDF
 ========================================== */
 @media print {
-    @page {
-        size: A4;
-        margin: 1cm;
-    }
+    @page { size: A4; margin: 1cm; }
 
-    body, .dashboard-container, .center-body {
-        background: white !important;
-        color: black !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important;
-    }
-
-    .botoes-acao, .btn-voltar, #logout-btn {
-        display: none !important;
-    }
+    body, .dashboard-container, .center-body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+    .botoes-acao, .btn-voltar, #logout-btn { display: none !important; }
 
     .section-box {
         border: 1px solid #ddd !important;
@@ -310,80 +179,41 @@ td input:focus {
         margin-bottom: 10px !important;
         page-break-inside: avoid;
         border-radius: 4px !important;
+        position: relative !important; /* Protege contra a marca d'agua */
+        z-index: 1 !important;
+    }
+
+    /* O Segredo: Exibe a imagem real no centro da página */
+    .marca-dagua-pdf {
+        display: block !important;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 60% !important;
+        opacity: 0.15 !important;
+        z-index: 0 !important;
+        pointer-events: none !important;
     }
 
     .grid-2 { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 5px !important; }
     .grid-3 { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
     .grid-4 { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 5px !important; }
     
-    .checkbox-grid {
-        display: grid !important;
-        grid-template-columns: repeat(4, 1fr) !important;
-        gap: 8px 5px !important; 
-    }
-
-    .checkbox-grid label { 
-        display: flex !important;
-        align-items: center !important; 
-        font-size: 10px !important; 
-        font-weight: normal !important; 
-        margin: 0 !important;
-        white-space: nowrap !important; 
-    }
-
-    .checkbox-grid input[type="checkbox"] {
-        width: 12px !important; 
-        height: 12px !important;
-        margin: 0 5px 0 0 !important; 
-        appearance: auto !important;
-        vertical-align: middle !important;
-    }
+    .checkbox-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 8px 5px !important; }
+    .checkbox-grid label { display: flex !important; align-items: center !important; font-size: 10px !important; font-weight: normal !important; margin: 0 !important; white-space: nowrap !important; }
+    .checkbox-grid input[type="checkbox"] { width: 12px !important; height: 12px !important; margin: 0 5px 0 0 !important; appearance: auto !important; vertical-align: middle !important; }
 
     h1 { font-size: 16px !important; margin: 0 !important; color: black !important; }
     h3, h4 { font-size: 12px !important; margin: 5px 0 !important; color: black !important; border-bottom: 1px solid #ccc; }
     label { font-size: 9px !important; margin-bottom: 1px !important; color: #555 !important; font-weight: bold; }
 
-    input, select {
-        border: none !important;
-        border-bottom: 1px solid #000 !important;
-        border-radius: 0 !important;
-        color: black !important;
-        background: transparent !important;
-        padding: 2px 4px !important;
-        font-size: 11px !important;
-        height: auto !important;
-        width: 100% !important;
-        box-shadow: none !important;
-    }
-
+    input, select { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; color: black !important; background: transparent !important; padding: 2px 4px !important; font-size: 11px !important; height: auto !important; width: 100% !important; box-shadow: none !important; }
     table { width: 100% !important; border-collapse: collapse !important; font-size: 10px !important; margin-top: 5px !important;}
     th { border-bottom: 1px solid black !important; color: black !important; padding: 4px !important; font-size: 9px !important; }
     td { border-bottom: 1px dotted #ccc !important; padding: 2px !important; }
-    
     td input { border-bottom: none !important; text-align: center; font-size: 11px !important;}
     
     ::-webkit-scrollbar { display: none; }
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-
-    /* ==========================================
-       MARCA D'ÁGUA DA LOGO NO FUNDO DO PDF
-    ========================================== */
-    body::after {
-        content: "";
-        position: fixed; 
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('/logo.jpg');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 60%; 
-        opacity: 0.15 !important; /* Transparência ideal para não atrapalhar a leitura */
-        z-index: 9999 !important; /* Fica POR CIMA do fundo branco */
-        pointer-events: none;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 }

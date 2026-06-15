@@ -20,6 +20,7 @@
             </div>
         </header>
 
+        <!-- CAIXA DE FILTROS E PESQUISA -->
         <div class="section-box">
             <h3 style="margin-bottom: 15px;">🔍 Pesquisar Pedidos</h3>
             <div class="grid-3">
@@ -53,7 +54,8 @@
                     </tr>
                 </thead>
                 <tbody id="historico-body">
-                    </tbody>
+                    <!-- Preenchido pelo JavaScript -->
+                </tbody>
             </table>
         </div>
     </div>
@@ -103,7 +105,7 @@
                 if (pedido.status === 'Em Produção') { corFundo = '#3498db'; } // Azul
 
                 tr.innerHTML = `
-                    <td><strong># ${pedido.num_pedido || pedido.id}</strong></td>
+                    <td style="white-space: nowrap;"><strong># ${pedido.num_pedido || pedido.id}</strong></td>
                     <td>${pedido.cliente_nome}</td>
                     <td style="color: #38bdf8; font-weight: bold;">${pedido.representante || '-'}</td>
                     <td>${dataFormatada}</td>

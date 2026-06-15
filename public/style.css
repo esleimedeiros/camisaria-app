@@ -142,12 +142,12 @@ button, .btn-success, .btn-danger, .btn-voltar {
 .btn-danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
 .btn-danger:hover { background: #ef4444; color: white; }
 
-.table-container { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+.table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 10px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; min-width: 800px; }
 th { color: var(--text-muted); text-align: left; padding: 12px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border-color); }
 tr th:nth-child(1), tr td:nth-child(1) { width: 4%; }
-tr th:nth-child(2), tr td:nth-child(2) { width: 10%; min-width: 60px; }
-tr th:nth-child(3), tr td:nth-child(3) { width: 10%; }
+tr th:nth-child(2), tr td:nth-child(2) { width: 8%; min-width: 60px; }
+tr th:nth-child(3), tr td:nth-child(3) { width: 12%; }
 tr th:nth-child(4), tr td:nth-child(4) { width: 12%; }
 tr th:nth-child(5), tr td:nth-child(5) { width: 10%; }
 tr th:nth-child(6), tr td:nth-child(6) { width: 8%; }
@@ -159,7 +159,6 @@ tbody tr { transition: background-color 0.2s ease; }
 tbody tr:hover { background-color: rgba(255, 255, 255, 0.03); }
 td input { padding: 8px; border: 1px solid transparent; background: transparent; width: 100%; box-sizing: border-box; }
 td input:focus { border-bottom: 1px solid var(--accent-color); background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
-.table-container { overflow-x: auto; }
 .item-qtd, .item-valor, .item-final, .item-mts { text-align: center; }
 .item-refer, .item-forn, .item-color, .item-obs { text-align: left; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -168,10 +167,12 @@ td input:focus { border-bottom: 1px solid var(--accent-color); background: rgba(
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
 @media (max-width: 768px) {
-    header { flex-direction: column; gap: 15px; text-align: center; }
+    header { flex-direction: column; gap: 15px; text-align: center; padding: 15px; }
+    .header-logo-title { flex-direction: column; gap: 5px; }
+    .header-botoes, .header-botoes div { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .header-botoes a, .header-botoes button { width: 100%; }
     .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
     .section-box { padding: 15px; }
-    table { min-width: 600px; }
 }
 
 /* ==========================================
@@ -181,7 +182,7 @@ td input:focus { border-bottom: 1px solid var(--accent-color); background: rgba(
     @page { size: A4; margin: 1cm; }
 
     body, .dashboard-container, .center-body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
-    .botoes-acao, .btn-voltar, #logout-btn { display: none !important; }
+    .botoes-acao, .btn-voltar, #logout-btn, .header-mobile { display: none !important; }
 
     .section-box {
         border: 1px solid #ddd !important;
@@ -191,11 +192,10 @@ td input:focus { border-bottom: 1px solid var(--accent-color); background: rgba(
         margin-bottom: 10px !important;
         page-break-inside: avoid;
         border-radius: 4px !important;
-        position: relative !important; /* Protege contra a marca d'agua */
+        position: relative !important; 
         z-index: 1 !important;
     }
 
-    /* O Segredo: Exibe a imagem real no centro da página */
     .marca-dagua-pdf {
         display: block !important;
         position: fixed !important;
@@ -221,7 +221,8 @@ td input:focus { border-bottom: 1px solid var(--accent-color); background: rgba(
     label { font-size: 9px !important; margin-bottom: 1px !important; color: #555 !important; font-weight: bold; }
 
     input, select { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; color: black !important; background: transparent !important; padding: 2px 4px !important; font-size: 11px !important; height: auto !important; width: 100% !important; box-shadow: none !important; box-sizing: border-box !important; }
-    table { width: 100% !important; border-collapse: collapse !important; table-layout: fixed !important; font-size: 10px !important; margin-top: 5px !important; }
+    
+    table { width: 100% !important; border-collapse: collapse !important; table-layout: fixed !important; font-size: 10px !important; margin-top: 5px !important; min-width: 0 !important; }
     tr th:nth-child(1), tr td:nth-child(1) { width: 4% !important; }
     tr th:nth-child(2), tr td:nth-child(2) { width: 6% !important; }
     tr th:nth-child(3), tr td:nth-child(3) { width: 12% !important; }
@@ -231,9 +232,9 @@ td input:focus { border-bottom: 1px solid var(--accent-color); background: rgba(
     tr th:nth-child(7), tr td:nth-child(7) { width: 18% !important; }
     tr th:nth-child(8), tr td:nth-child(8) { width: 15% !important; }
     tr th:nth-child(9), tr td:nth-child(9) { width: 15% !important; }
-    th, td { border-bottom: 1px dotted #ccc !important; padding: 2px !important; word-break: break-word !important; white-space: normal !important; }
+    th, td { border-bottom: 1px dotted #ccc !important; padding: 2px !important; word-break: break-word !important; white-space: normal !important; color: black !important; }
     td input { border-bottom: none !important; text-align: center; font-size: 11px !important; width: 100% !important; box-sizing: border-box !important; min-width: 0 !important; }
-    .table-container { overflow-x: hidden !important; }
+    .table-container { overflow-x: visible !important; }
     
     ::-webkit-scrollbar { display: none; }
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }

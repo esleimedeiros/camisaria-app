@@ -105,9 +105,12 @@ if (salvarBtn) {
         });
 
         const medidas = {
+            cliente_email: document.getElementById('cliente_email') ? document.getElementById('cliente_email').value : '',
+            comprimento: document.getElementById('med_comprimento') ? document.getElementById('med_comprimento').value : '',
             compr_ml: document.getElementById('med_compr_ml') ? document.getElementById('med_compr_ml').value : '',
             compr_mc: document.getElementById('med_compr_mc') ? document.getElementById('med_compr_mc').value : '',
             colarinho: document.getElementById('med_colarinho') ? document.getElementById('med_colarinho').value : '',
+            pala: document.getElementById('med_pala') ? document.getElementById('med_pala').value : '',
             torax: document.getElementById('med_torax') ? document.getElementById('med_torax').value : '',
             cintura: document.getElementById('med_cintura') ? document.getElementById('med_cintura').value : '',
             frauda: document.getElementById('med_frauda') ? document.getElementById('med_frauda').value : '',
@@ -263,9 +266,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (pedido.medidas) {
                     const med = JSON.parse(pedido.medidas);
+                    if (document.getElementById('cliente_email')) document.getElementById('cliente_email').value = med.cliente_email || '';
+                    if (document.getElementById('med_comprimento')) document.getElementById('med_comprimento').value = med.comprimento || '';
                     if (document.getElementById('med_compr_ml')) document.getElementById('med_compr_ml').value = med.compr_ml || '';
                     if (document.getElementById('med_compr_mc')) document.getElementById('med_compr_mc').value = med.compr_mc || '';
                     if (document.getElementById('med_colarinho')) document.getElementById('med_colarinho').value = med.colarinho || '';
+                    if (document.getElementById('med_pala')) document.getElementById('med_pala').value = med.pala || '';
                     if (document.getElementById('med_torax')) document.getElementById('med_torax').value = med.torax || '';
                     if (document.getElementById('med_cintura')) document.getElementById('med_cintura').value = med.cintura || '';
                     if (document.getElementById('med_frauda')) document.getElementById('med_frauda').value = med.frauda || '';
@@ -323,6 +329,6 @@ if (imprimirPdfBtn) {
         window.print();
         
         if (botoes) botoes.style.display = 'flex';
-        if (header) header.style.display = 'block';
+        if (header) header.style.display = 'flex';
     });
 }

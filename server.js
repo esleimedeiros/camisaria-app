@@ -6,10 +6,16 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const db = new sqlite3.Database('./database.db', (err) => {
+// SEGREDO PARA NÃO PERDER DADOS: 
+// Vai procurar o Disco do Render. Se não achar, cria na pasta local.
+const dbPath = process.env.DB_PATH || './database.db';
+
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) console.error(err.message);
-    console.log('Banco de dados conectado.');
+    console.log(`Banco de dados conectado em: ${dbPath}`);
 });
+
+// Daqui para baixo, o seu código db.serialize(...) continua EXATAMENTE igual!
 
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
